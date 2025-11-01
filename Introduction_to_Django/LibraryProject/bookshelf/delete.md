@@ -1,3 +1,4 @@
+>>> from bookshelf.models import Book 
 >>> book = Book.objects.all()
 >>> book = Book.objects.get(pk=1)
 >>> book.delete()
