@@ -33,5 +33,4 @@ library = Library.objects.get(name=library_name)
 library.books.all()
 
 #Retrieve the librarian for a library.
-libarian = LibrModel_1
-print(libarian.name)
+Librarian.objects.get(library=LibModel_1)
