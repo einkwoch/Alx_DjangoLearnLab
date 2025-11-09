@@ -26,8 +26,9 @@ for book in book_by_author_1:
     print(book.title)
 
 # List all books in a library.
-library = Library.objects.get(name = LibModel_1.name)
-library.books.all()
+library_name = 'Standard Books'
+library = Library.objects.get(name = library_name)
+
 
 #Retrieve the librarian for a library.
 libarian = LibrModel_1
