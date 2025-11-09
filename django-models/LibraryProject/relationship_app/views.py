@@ -8,7 +8,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import View
 from django.views.generic.edit import CreateView
-from django.contrib.auth.decorators import user_passes_test,permission_required
+from django.contrib.auth.decorators import permission_required,user_passes_test,
 # Create your views here.
 
 
