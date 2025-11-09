@@ -7,5 +7,5 @@ urlpatterns = [
     path('library/<int:pk>/', LibraryDetailView.as_view(), name='library_detail'),  # URL for the class-based view
     path('login/', LoginView.as_view(template_name='relationship_app/login.html'), name='login'),  # Using built-in login view
     path('logout/', LogoutView.as_view(template_name='relationship_app/logout.html'), name='logout'),  # Using built-in logout view
-    path('register/', RegisterView.as_view(), name='register'),  # Custom registration view
+    path('register/', RegisterView.as_view(), name='views.register'),  # Custom registration view
 ]
