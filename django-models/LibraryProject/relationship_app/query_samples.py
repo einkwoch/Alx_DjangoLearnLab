@@ -21,9 +21,11 @@ LibrModel_1 = Librarian.objects.create(name = 'Good', Library = LibModel_1)
 LibrModel_2 = Librarian.objects.create(name = 'Very Good', Library = LibModel_2)
 
 # Query all books by a specific author.
-book_by_author_1 = Book.objects.filter(author = Author_1)
-for book in book_by_author_1:
-    print(book.title)
+author_name='Emmanuel Izu'
+author = Author.objects.get(name=author_name)
+Book.objects.filter(author=author)
+
+
 
 # List all books in a library.
 library_name = 'Standard Books'
