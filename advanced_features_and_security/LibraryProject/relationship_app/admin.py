@@ -1,11 +1,11 @@
 from django.contrib import admin
-from .models import CustomUsers
+from .models import CustomUser
 from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
 class ModelAdmin(UserAdmin):
-    model = CustomUsers
+    model = CustomUser
     list_display = ('username', 'email', 'is_staff', 'date_of_birth')
     fieldsets = UserAdmin.fieldsets + (
         (None, {'fields': ('date_of_birth', 'profile_photo')}),
@@ -15,4 +15,4 @@ class ModelAdmin(UserAdmin):
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
     )
 
-admin.site.register(CustomUsers, ModelAdmin)
+admin.site.register(CustomUser, ModelAdmin)
