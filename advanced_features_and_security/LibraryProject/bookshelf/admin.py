@@ -4,7 +4,7 @@ from django.contrib.auth.admin import UserAdmin
 
 # Register your models here.
 
-class ModelAdmin(UserAdmin):
+class CustomUserAdmin(UserAdmin):
     model = CustomUser
     list_display = ('username', 'email', 'is_staff', 'date_of_birth')
     fieldsets = UserAdmin.fieldsets + (
@@ -15,4 +15,4 @@ class ModelAdmin(UserAdmin):
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
     )
 
-admin.site.register(CustomUser, ModelAdmin)
+admin.site.register(CustomUser, CustomUserAdmin)
