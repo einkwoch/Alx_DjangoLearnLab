@@ -1,7 +1,7 @@
 from django import forms
 from .models import Book, Author
 
-class BookForm(forms.ModelForm):
+class ExampleForm(forms.ModelForm):
     title = forms.CharField(max_length=100, strip=True)
     author = forms.ModelChoiceField(queryset=Author.objects.all())
 
