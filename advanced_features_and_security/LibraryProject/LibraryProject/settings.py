@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-bo7)7m7k$xk%uts+bwp-2o+_tn4=93&#pg)_e+s&w3zr08g0wf
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['emmanuelizu.com']
+ALLOWED_HOSTS = ['emmanuelizu.com','emmanuelizu.com']
 
 
 # Application definition
@@ -39,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'bookshelf.apps.BookshelfConfig',
     'relationship_app.apps.RelationshipAppConfig',
+    "csp",## I Just added this
 ]
 
 MIDDLEWARE = [
@@ -49,6 +50,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'bookshelf.middleware.CSPMiddleware',## I Just added this
+    'csp.middleware.CSPMiddleware',## I Just added this
 ]
 
 ROOT_URLCONF = 'LibraryProject.urls'
@@ -60,6 +63,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                "django.template.context_processors.debug", ## I Just added this
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
@@ -132,3 +136,25 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'bookshelf.CustomUser'
+
+
+# Security hardening
+
+# Browser-side protections
+SECURE_CONTENT_TYPE_NOSNIFF = True
+X_FRAME_OPTIONS = "DENY"
+SECURE_BROWSER_XSS_FILTER = True
+
+# Cookies sent only over HTTPS
+CSRF_COOKIE_SECURE = True
+SESSION_COOKIE_SECURE = True
+
+# SameSite to reduce CSRF risk while allowing typical app flows
+CSRF_COOKIE_SAMESITE = "Lax"
+SESSION_COOKIE_SAMESITE = "Lax"
+
+# Force HTTPS (enable once HTTPS works in your environment)
+SECURE_SSL_REDIRECT = True
+
+
+CSRF_TRUSTED_ORIGINS = ['https://emmanuelizu.com','https://emmanuelizu.com']
