@@ -8,27 +8,26 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.urls import reverse_lazy
 from django.views.generic import View
 from django.views.generic.edit import CreateView
-from django.contrib.auth.decorators import permission_required,user_passes_test,
+from django.contrib.auth.decorators import permission_required,user_passes_test,login_required
 # Create your views here.
-
-
-
+@login_required
+@permission_required('bookshelf.can_view')
 def list_books(request):
     """Function-based view to list all books."""
     books = Book.objects.all()  # Query all books from the database
-    return render(request, 'relationship_app/list_books.html', {'books': books})
+    return render(request, 'bookshelf/list_books.html', {'books': books})
 
 class LibraryDetailView(DetailView):
     """Class-based view to display details of a specific library."""
     model = Library
-    template_name = 'relationship_app/library_detail.html'  # Specify your template for display
+    template_name = 'bookshelf/library_detail.html'  # Specify your template for display
     context_object_name = 'library'
 
 
 # User Registration View
 class RegisterView(CreateView):
     form_class = UserCreationForm()
-    template_name = 'relationship_app/register.html'
+    template_name = 'bookshelf/register.html'
     success_url = reverse_lazy('login')
 
     def form_valid(self, form):
@@ -46,14 +45,14 @@ def login_view(request):
             login(request, user)
             return redirect('profile')  # Redirect to a desired page after login
         else:
-            return render(request, 'relationship_app/login.html', {'form': None, 'error': 'Invalid credentials'})
+            return render(request, 'bookshelf/login.html', {'form': None, 'error': 'Invalid credentials'})
     
-    return render(request, 'relationship_app/login.html', {'form': None})
+    return render(request, 'bookshelf/login.html', {'form': None})
 
 def logout_view(request):
     # Assuming you have set up logout logic
     logout(request)
-    return render(request, 'relationship_app/logout.html')
+    return render(request, 'bookshelf/logout.html')
 
 def is_admin(user):
     return user.userprofile.role == 'Admin'
@@ -66,18 +65,18 @@ def is_member(user):
 
 @user_passes_test(is_admin)
 def admin_view(request):
-    return render(request, 'relationship_app/admin_view.html')
+    return render(request, 'bookshelf/admin_view.html')
 
 @user_passes_test(is_librarian)
 def librarian_view(request):
-    return render(request, 'relationship_app/librarian_view.html')
+    return render(request, 'bookshelf/librarian_view.html')
 
 @user_passes_test(is_member)
 def member_view(request):
-    return render(request, 'relationship_app/member_view.html')
+    return render(request, 'bookshelf/member_view.html')
 
-
-@permission_required('relationship_app.can_add_book')
+@login_required
+@permission_required('bookshelf.can_create')
 def add_book(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -85,10 +84,11 @@ def add_book(request):
         author = get_object_or_404(Author, id=author_id)
         Book.objects.create(title=title, author=author)
         return redirect('list_books')  # Assuming you have a view to list books
-    return render(request, 'relationship_app/add_book.html')
+    return render(request, 'bookshelf/add_book.html')
 
 # View to edit a book
-@permission_required('relationship_app.can_change_book')
+@login_required
+@permission_required('bookshelf.can_edit')
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
@@ -96,13 +96,14 @@ def edit_book(request, book_id):
         book.author_id = request.POST.get('author')  # Set the author ID
         book.save()
         return redirect('list_books')
-    return render(request, 'relationship_app/edit_book.html', {'book': book})
+    return render(request, 'bookshelf/edit_book.html', {'book': book})
 
 # View to delete a book
-@permission_required('relationship_app.can_delete_book')
+@login_required
+@permission_required('bookshelf.can_delete')
 def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
         book.delete()
         return redirect('list_books')
-    return render(request, 'relationship_app/delete_book.html', {'book': book})
+    return render(request, 'bookshelf/delete_book.html', {'book': book})

@@ -13,6 +13,7 @@ class CustomUserAdmin(UserAdmin):
     add_fieldsets = UserAdmin.add_fieldsets + (
         (None, {'fields': ('date_of_birth', 'profile_photo')}),
         ('Permissions', {'fields': ('is_staff', 'is_active')}),
+        ('Groups', {'fields': ('groups',)}),
     )
 
 admin.site.register(CustomUser, CustomUserAdmin)
