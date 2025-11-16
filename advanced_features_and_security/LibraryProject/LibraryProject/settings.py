@@ -156,5 +156,12 @@ SESSION_COOKIE_SAMESITE = "Lax"
 # Force HTTPS (enable once HTTPS works in your environment)
 SECURE_SSL_REDIRECT = True
 
+# Redirect all HTTP to HTTPS (production only)
+SECURE_SSL_REDIRECT = True
+
+# HSTS (production only)
+SECURE_HSTS_SECONDS = 31536000
+SECURE_HSTS_INCLUDE_SUBDOMAINS = True
+SECURE_HSTS_PRELOAD = True
 
 CSRF_TRUSTED_ORIGINS = ['https://emmanuelizu.com','https://emmanuelizu.com']
