@@ -26,7 +26,7 @@ def book_list(request):
     if q:
         # Safe parameterized filtering via ORM
         books = books.filter(Q(title__icontains=q) | Q(author__name__icontains=q))
-        return render(request, 'bookshelf/list_books.html', {'books': books, 'search_form': form})
+        return render(request, 'bookshelf/book_list.html', {'books': books, 'search_form': form})
 
 class LibraryDetailView(DetailView):
     """Class-based view to display details of a specific library."""
