@@ -11,8 +11,8 @@ from django.views.generic.edit import CreateView
 from django.contrib.auth.decorators import permission_required,user_passes_test,login_required
 # Create your views here.
 @login_required
-@permission_required('bookshelf.can_view')
-def list_books(request):
+@permission_required('bookshelf.can_view', raise_exception=True)
+def book_list(request):
     """Function-based view to list all books."""
     books = Book.objects.all()  # Query all books from the database
     return render(request, 'bookshelf/list_books.html', {'books': books})
@@ -76,7 +76,7 @@ def member_view(request):
     return render(request, 'bookshelf/member_view.html')
 
 @login_required
-@permission_required('bookshelf.can_create')
+@permission_required('bookshelf.can_create', raise_exception=True)
 def add_book(request):
     if request.method == 'POST':
         title = request.POST.get('title')
@@ -88,7 +88,7 @@ def add_book(request):
 
 # View to edit a book
 @login_required
-@permission_required('bookshelf.can_edit')
+@permission_required('bookshelf.can_edit', raise_exception=True)
 def edit_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
@@ -100,7 +100,7 @@ def edit_book(request, book_id):
 
 # View to delete a book
 @login_required
-@permission_required('bookshelf.can_delete')
+@permission_required('bookshelf.can_delete', raise_exception=True)
 def delete_book(request, book_id):
     book = get_object_or_404(Book, id=book_id)
     if request.method == 'POST':
