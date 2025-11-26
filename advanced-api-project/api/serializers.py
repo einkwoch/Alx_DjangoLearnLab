@@ -35,7 +35,7 @@ class AuthorSerializer(serializers.ModelSerializer):
     Serializer for the Author model.
     Includes all related books using the nested BookSerializer.
     """
-    books = BookSerializer(many=True)
+    books = BookSerializer(many=True, read_only=True)
     # Nested serializer.
     # 'many=True' tells DRF that an author can have multiple books.
     # This will automatically serialize the author's related books.
