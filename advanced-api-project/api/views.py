@@ -5,7 +5,8 @@ from rest_framework import generics
 from rest_framework.permissions import (
     IsAuthenticated,
     IsAdminUser,
-    AllowAny
+    AllowAny,
+    IsAuthenticatedOrReadOnly,
 )
 # Create your views here.
 
@@ -22,12 +23,12 @@ class BookListCreateAPIView(generics.ListCreateAPIView):
 class ListView(generics.ListAPIView):
     queryset = Book.objects.select_related()
     serializer_class = BookSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class DetailView(generics.RetrieveAPIView):
     queryset = Book.objects.select_related()
     serializer_class = BookSerializer
-    permission_classes = [AllowAny]
+    permission_classes = [IsAuthenticatedOrReadOnly]
 
 class CreateView(generics.CreateAPIView):
     queryset = Book.objects.select_related()
