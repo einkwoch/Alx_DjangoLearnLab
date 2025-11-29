@@ -3,6 +3,7 @@ from .models import Book, Author
 from datetime import date
 
 class BookSerializer(serializers.ModelSerializer):
+    author = serializers.PrimaryKeyRelatedField(queryset=Author.objects.all())
     """
     Serializer for the Book model.
     Converts Book model instances into JSON and validates input for creating/updating Books.
