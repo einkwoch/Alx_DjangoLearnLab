@@ -1,3 +1,7 @@
 from django.contrib import admin
+from .models import Post
 
-# Register your models here.
+class Post_Cus_D(admin.ModelAdmin):
+    list_display = ('title','content','published_date','author')    
+
+admin.site.register(Post, Post_Cus_D)
