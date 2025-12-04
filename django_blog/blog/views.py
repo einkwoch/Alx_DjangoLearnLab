@@ -1,10 +1,12 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from .models import Post
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .forms import PostCreateUpdateForm
+from .forms import PostCreateUpdateForm, CustomUserCreationForm
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
+from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+
 # Create your views here.
 
 class ListBlogPost(ListView):
@@ -60,3 +62,35 @@ class DeleteBlogPost(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     def handle_no_permission(self):
         # You can change this to the response you want
         return HttpResponseForbidden("You do not have permission to delete this post.")
+    
+
+### User Authentication
+
+def RegisterView(request):
+    if request.method == 'POST':
+        form = CustomUserCreationForm(request.POST)
+        if form.is_valid():
+            user = form.save()
+            login(request, user)  # Automatically log the user in after registration
+            return redirect('posts')  # Redirect to a homepage or another relevant page
+    else:
+        form = CustomUserCreationForm()
+    return render(request, 'blog/register.html', {'form': form})
+
+
+### profile
+from django.contrib.auth.decorators import login_required
+from .forms import UserProfileForm
+
+@login_required
+def profile_view(request):
+    user = request.user  # Get the currently authenticated user
+    if request.method == 'POST':
+        form = UserProfileForm(request.POST, instance=user)  # Bind the form to the user instance
+        if form.is_valid():
+            form.save()  # Save changes to the user profile
+            return redirect('profile')  # Redirect to the same profile page after saving
+    else:
+        form = UserProfileForm(instance=user)  # Create a form instance for the GET request
+
+    return render(request, 'blog/profile.html', {'form': form})

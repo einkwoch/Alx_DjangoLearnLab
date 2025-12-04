@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>User Profile</title>
+</head>
+<body>
+    <h1>User Profile</h1>
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}  <!-- Render form fields as paragraphs -->
+        <button type="submit">Update Profile</button>
+    </form>
+
+    <h2>Current User:</h2>  <!-- Optionally display current user information -->
+    <p>Username: {{ user.username }}</p>
+    <p>Email: {{ user.email }}</p>
+
+    <p><a href="{% url 'logout' %}">Logout</a></p>
+</body>
+</html>
