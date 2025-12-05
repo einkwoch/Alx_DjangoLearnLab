@@ -148,7 +148,7 @@ class CommentDeleteView(View):
         return redirect('detail', pk=post_pk)
 
 
-class PostCreateView(CreateView):
+class PostByTagListView(CreateView):
     model = Post
     form_class = PostForm
     template_name = 'blog/create_post.html'
