@@ -99,7 +99,8 @@ def profile_view(request):
 
     return render(request, 'blog/profile.html', {'form': form})
 
-
+class CommentCreateView:
+    pass
 class PostDetailView(View):
     def get(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
