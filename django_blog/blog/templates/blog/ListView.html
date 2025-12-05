@@ -1,12 +1,10 @@
-{% extends "blog/base.html" %} 
-{% block title %} Blog Post {% endblock %} 
-
-{% block content %}
+{% extends "blog/base.html" %} {% block title %} Blog Post {% endblock %} {%
+block content %}
 <h2>Welcome to Blog Post</h2>
 <ul>
-    {% for post in posts %}
-        <li>{{ post.title }} - {{ post.published_date }}</li>
-    {% endfor %}
+  {% for post in posts %}
+  <li>{{ post.title }} - {{ post.published_date }}</li>
+  {% endfor %}
 </ul>
 <a href="{% url 'create' %}">Create a New Post</a>
 {% endblock %}

@@ -1,11 +1,15 @@
 from django.shortcuts import render, redirect
-from .models import Post
+from .models import Post, Comment
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .forms import PostCreateUpdateForm, CustomUserCreationForm
+from .forms import PostCreateUpdateForm, CustomUserCreationForm, CommentForm
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
 from django.contrib.auth import login, authenticate
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
+from django.contrib.auth.decorators import login_required
+from django.utils.decorators import method_decorator
+from django.views import View
+from django.shortcuts import render, redirect, get_object_or_404
 
 # Create your views here.
 
@@ -94,3 +98,51 @@ def profile_view(request):
         form = UserProfileForm(instance=user)  # Create a form instance for the GET request
 
     return render(request, 'blog/profile.html', {'form': form})
+
+
+class PostDetailView(View):
+    def get(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        comments = post.comments.all()  # Get all comments related to the post
+        comment_form = CommentForm()  # Create an empty comment form
+        return render(request, 'blog/detail.html', {
+            'post': post,
+            'comments': comments,
+            'comment_form': comment_form,
+        })
+
+    @method_decorator(login_required)
+    def post(self, request, pk):
+        post = get_object_or_404(Post, pk=pk)
+        comment_form = CommentForm(request.POST)
+
+        if comment_form.is_valid():
+            comment = comment_form.save(commit=False)
+            comment.post = post  # Associate the comment with the post
+            comment.author = request.user  # Associate the comment with the logged-in user
+            comment.save()  # Save the comment
+            return redirect('detail', pk=pk)  # Redirect back to the post detail page
+
+        comments = post.comments.all()  # Get all comments for the post
+        return render(request, 'blog/detail.html', {
+            'post': post,
+            'comments': comments,
+            'comment_form': comment_form,
+        })
+
+class CommentUpdateView(View):
+    @method_decorator(login_required)
+    def post(self, request, post_pk, comment_pk):
+        comment = get_object_or_404(Comment, pk=comment_pk, author=request.user)
+        comment_form = CommentForm(request.POST, instance=comment)
+
+        if comment_form.is_valid():
+            comment_form.save()  # Save the updated comment
+            return redirect('detail', pk=post_pk)
+
+class CommentDeleteView(View):
+    @method_decorator(login_required)
+    def post(self, request, post_pk, comment_pk):
+        comment = get_object_or_404(Comment, pk=comment_pk, author=request.user)
+        comment.delete()  # Delete the comment
+        return redirect('detail', pk=post_pk)

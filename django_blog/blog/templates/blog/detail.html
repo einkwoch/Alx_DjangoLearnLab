@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ post.title }}</title>
+</head>
+<body>
+    <h1>{{ post.title }}</h1>
+    <p>{{ post.content }}</p>
+
+    <h2>Comments</h2>
+    <div>
+        {% for comment in comments %}
+            <p><strong>{{ comment.author.username }}</strong>: {{ comment.content }} <em>(Posted on {{ comment.created_at }})</em></p>
+            {% if user == comment.author %}
+                <!-- Add links or buttons for editing and deleting -->
+                <form method="post" action="{% url 'comment_delete' post.pk comment.pk %}">
+                    {% csrf_token %}
+                    <button type="submit">Delete</button>
+                </form>
+            {% endif %}
+        {% empty %}
+            <p>No comments yet.</p>
+        {% endfor %}
+    </div>
+
+    <h3>Add a Comment</h3>
+    <form method="post">
+        {% csrf_token %}
+        {{ comment_form.as_p }}
+        <button type="submit">Add Comment</button>
+    </form>
+</body>
+</html>

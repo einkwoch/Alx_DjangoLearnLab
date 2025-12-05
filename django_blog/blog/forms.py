@@ -2,6 +2,7 @@ from django import forms
 from .models import Post
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
+from .models import Comment
 
 class PostCreateUpdateForm(forms.ModelForm):
     class Meta:
@@ -26,3 +27,9 @@ class UserProfileForm(UserChangeForm):
     class Meta:
         model = User
         fields = ['username', 'email']
+
+
+class CommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['content']  # Only allow 'content' field for commenting
