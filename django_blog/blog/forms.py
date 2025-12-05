@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Tag
 from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.models import User
 from .models import Comment
@@ -33,3 +33,16 @@ class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
         fields = ['content']  # Only allow 'content' field for commenting
+
+
+class PostForm(forms.ModelForm):
+    class Meta:
+        model = Post
+        fields = ['title', 'content', 'tags']  # Include the tags field
+
+    tags = forms.ModelMultipleChoiceField(
+        queryset=Tag.objects.all(),
+        widgets=forms.CheckboxSelectMultiple,
+        required=False  # Tags are not always required
+    )
+
