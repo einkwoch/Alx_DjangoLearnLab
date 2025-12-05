@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
-from .models import Post, Comment
+from .models import Post, Comment, Tag
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
-from .forms import PostCreateUpdateForm, CustomUserCreationForm, CommentForm
+from .forms import PostCreateUpdateForm, CustomUserCreationForm, CommentForm, PostForm
 from django.urls import reverse_lazy
 from django.http import HttpResponseForbidden
 from django.contrib.auth import login, authenticate
@@ -99,9 +99,8 @@ def profile_view(request):
 
     return render(request, 'blog/profile.html', {'form': form})
 
-class CommentCreateView:
-    pass
-class PostDetailView(View):
+
+class CommentCreateView(View):
     def get(self, request, pk):
         post = get_object_or_404(Post, pk=pk)
         comments = post.comments.all()  # Get all comments related to the post
@@ -147,3 +146,30 @@ class CommentDeleteView(View):
         comment = get_object_or_404(Comment, pk=comment_pk, author=request.user)
         comment.delete()  # Delete the comment
         return redirect('detail', pk=post_pk)
+
+
+class PostCreateView(CreateView):
+    model = Post
+    form_class = PostForm
+    template_name = 'blog/create_post.html'
+    success_url = reverse_lazy('posts')
+
+    def form_valid(self, form):
+        form.instance.author = self.request.user  # Set the author to the logged-in user
+        return super().form_valid(form)
+    
+
+### Search Functionality
+from django.db.models import Q
+def search_view(request):
+    query = request.GET.get('q')
+    results = Post.objects.none()  # Start with an empty QuerySet
+
+    if query:
+        results = Post.objects.filter(
+            Q(title__icontains=query) |  # Matches title
+            Q(content__icontains=query) |  # Matches content
+            Q(tags__name__icontains=query)  # Matches tags
+        ).distinct()  # Ensure no duplicate posts are shown
+
+    return render(request, 'blog/search_results.html', {'results': results, 'query': query})

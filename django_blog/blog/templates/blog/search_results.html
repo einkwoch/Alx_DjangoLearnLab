@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Search Results</title>
+</head>
+<body>
+    <h1>Search Results for "{{ query }}"</h1>
+    <ul>
+        {% for post in results %}
+            <li>
+                <a href="{% url 'detail' post.pk %}">{{ post.title }}</a> - {{ post.published_date }}
+            </li>
+        {% empty %}
+            <li>No results found.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>
