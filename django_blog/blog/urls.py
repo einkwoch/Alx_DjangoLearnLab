@@ -13,7 +13,7 @@ urlpatterns = [
     path('login/', LoginView.as_view(), name='login'),         # Built-in login view
     path('logout/', LogoutView.as_view(), name='logout'),
     path('profile/', views.profile_view, name='profile'),
-    path('post/<int:post_pk>/comments/new/', views.CommentCreateView.as_view(), name='comment_create'),  # For creating a new comment
+    path('post/<int:pk>/comments/new/', views.CommentCreateView.as_view(), name='comment_create'),  # For creating a new comment
     path('comment/<int:pk>/update/', views.CommentUpdateView.as_view(), name='comment_edit'),  # For editing a comment
     path('comment/<int:pk>/delete/', views.CommentDeleteView.as_view(), name='comment_delete'),  # For deleting a comment 
 ]
