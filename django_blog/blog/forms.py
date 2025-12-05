@@ -39,7 +39,7 @@ class PostForm(forms.ModelForm):
     class Meta:
         model = Post
         fields = ['title', 'content', 'tags']  # Include the tags field
-
+        Hold = "TagWidget()"
     tags = forms.ModelMultipleChoiceField(
         queryset=Tag.objects.all(),
         widgets=forms.CheckboxSelectMultiple,
