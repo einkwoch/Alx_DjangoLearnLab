@@ -15,18 +15,18 @@ from django.shortcuts import render, redirect, get_object_or_404
 
 class ListBlogPost(ListView):
     model = Post
-    template_name = 'blog/listing_post.html'
+    template_name = 'blog/listing.html'
     context_object_name = 'posts'
 
 class DetailBlogPost(DetailView):
     model = Post
-    template_name = 'blog/viewing_post.html'
+    template_name = 'blog/viewing.html'
     context_object_name = 'detail_blog'   
 
 class CreatBlogPost(LoginRequiredMixin, CreateView):
     model = Post
     form_class = PostCreateUpdateForm
-    template_name = 'blog/creating_post.html'
+    template_name = 'blog/creating.html'
     success_url = reverse_lazy('posts')
 
 
@@ -38,7 +38,7 @@ class CreatBlogPost(LoginRequiredMixin, CreateView):
 class UpdateBlogPost(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
     model = Post
     form_class = PostCreateUpdateForm
-    template_name = 'blog/editing_post.html'
+    template_name = 'blog/editing.html'
     success_url = reverse_lazy('posts')
 
     def test_func(self):
@@ -56,7 +56,7 @@ class UpdateBlogPost(UserPassesTestMixin, LoginRequiredMixin, UpdateView):
 
 class DeleteBlogPost(UserPassesTestMixin, LoginRequiredMixin, DeleteView):
     model = Post
-    template_name = 'blog/deleting_post.html'
+    template_name = 'blog/deleting.html'
     context_object_name = 'Delete_blog'
 
     def test_func(self):
