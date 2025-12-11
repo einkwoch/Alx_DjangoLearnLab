@@ -7,6 +7,7 @@ from .serializers import RegisterSerializer, LoginSerializer
 from .serializers import UserSerializer
 from django.contrib.auth import get_user_model
 
+
 class RegisterView(generics.CreateAPIView):
     serializer_class = RegisterSerializer
 
@@ -38,3 +39,4 @@ class UserProfileView(generics.RetrieveUpdateAPIView):
         serializer.is_valid(raise_exception=True)
         serializer.save()
         return Response(serializer.data)
+    

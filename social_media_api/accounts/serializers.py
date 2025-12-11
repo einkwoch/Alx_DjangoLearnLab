@@ -5,12 +5,12 @@ from django.contrib.auth import authenticate
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ['id', 'username', 'email', 'bio', 'profile_picture']
 
 class RegisterSerializer(serializers.ModelSerializer):
     class Meta:
-        model = User
+        model = get_user_model()
         fields = ['username', 'email', 'password', 'bio', 'profile_picture']
         extra_kwargs = {'password': {'write_only': True}}
 
@@ -29,3 +29,4 @@ class LoginSerializer(serializers.Serializer):
             return user
         raise serializers.ValidationError('Invalid credentials')
     
+
