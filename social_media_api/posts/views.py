@@ -38,3 +38,5 @@ class FeedViewSet(viewsets.ReadOnlyModelViewSet):
         # Get posts from users that the requesting user follows
         following = self.request.user.following.all()
         return Post.objects.filter(author__in=following).order_by('-created_at')  # Most recent first
+
+        #return Post.objects.filter(author__in=following_users).order_by
