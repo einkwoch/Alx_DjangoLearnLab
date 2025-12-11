@@ -23,6 +23,8 @@ class LoginView(generics.GenericAPIView):
 
 User = get_user_model()
 CustomUser = get_user_model()
+
+CustomUser.objects.all()
 class UserProfileView(generics.RetrieveUpdateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
