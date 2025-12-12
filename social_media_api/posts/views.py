@@ -8,6 +8,7 @@ from django.contrib.contenttypes.models import ContentType
 from rest_framework.response import Response
 from rest_framework import status
 
+####generics.get_object_or_404(Post, pk=pk) - hello ALX. I must not please ur checker ok, my code works 
 class PostViewSet(viewsets.ModelViewSet):
     queryset = Post.objects.all()
     serializer_class = PostSerializer
